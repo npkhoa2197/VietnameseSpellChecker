@@ -7,7 +7,11 @@ def main():
     # PreProcessing may also contain other functions of HolbrookCorpus
     trainingCorpus = PreProcessing(trainPath)
     
-    print trainingCorpus.corpus
+    for sentence in trainingCorpus.corpus:
+        #_data = sentence.data 
+        #for i in range(len(datums)):
+        print sentence 
+    #print trainingCorpus.corpus
     # testPath = '../data/test/testCorpus.dat'
     # # TODO: implement PreProcessing: normalization, spliting, punctuation mark removal
     # # PreProcessing may also contain other functions of HolbrookCorpus
