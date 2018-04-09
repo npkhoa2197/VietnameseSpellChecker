@@ -7,7 +7,7 @@ class PreProcessing:
     
     #patterns for regex matching
     email_pat = '([\w\.-]+@)((?:\w|\.|-)+(?:-?[eE]-?[dD]-?[uU]|com|vn|com\.vn))(?!\w+)'
-    number_pat = '([0-9]+)'
+    number_pat = '[-+]?[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?'
     #url_temp = '((?<=[^a-zA-Z0-9])(?:https?\:\/\/|[a-zA-Z0-9]{1,}\.{1}|\b)(?:\w{1,}\.{1}){1,5}(?:com|org|edu|gov|uk|net|ca|de|jp|fr|au|us|ru|ch|it|nl|se|no|es|mil|iq|io|ac|ly|sm){1}(?:\/[a-zA-Z0-9]{1,})*)'
     url_pat1 = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     url_pat2 = '((?:[\w]+\.)+(?:com|org|edu|gov|uk|net|ca|de|jp|fr|au|us|ru|ch|it|nl|se|no|es|mil|iq|io|vn|ly|sm){1})'
