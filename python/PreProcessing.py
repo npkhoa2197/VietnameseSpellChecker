@@ -56,7 +56,7 @@ class PreProcessing:
             return None
         
         processed_tokens = Sentence()
-        processed_tokens.append(Datum("<s>")) #start symbol
+        processed_tokens.append(Datum("<s>")) #sentence start symbol
 
         tokens = line.split()
         i = 0
@@ -64,7 +64,6 @@ class PreProcessing:
             token = tokens[i]
             processed_tokens.append(Datum(token))
             i += 1
-
 
         #*************maybe used later****************
         # tokens = line.split()
@@ -89,7 +88,8 @@ class PreProcessing:
         #     else: # regular word
         #         processed_tokens.append(Datum(token))
         #         i += 1
-        processed_tokens.append(Datum("</s>"))
+
+        processed_tokens.append(Datum("</s>")) #sentence end symbol
         return processed_tokens
 
     def normalize(self, line):

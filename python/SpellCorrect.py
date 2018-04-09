@@ -10,7 +10,9 @@ def main():
     for sentence in trainingCorpus.corpus:
         #_data = sentence.data 
         #for i in range(len(datums)):
-        print sentence 
+        print sentence
+
+    ########
     #print trainingCorpus.corpus
     # testPath = '../data/test/testCorpus.dat'
     # # TODO: implement PreProcessing: normalization, spliting, punctuation mark removal
