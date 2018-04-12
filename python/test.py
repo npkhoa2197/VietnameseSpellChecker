@@ -4,5 +4,5 @@
 from TelexConverter import TelexConverter
 
 c = TelexConverter()
-a = c.ToRaw(u'quyết')
-print c.ToVietnamese(u"eechs")
+#c.ToRaw(u'quyết')
+print c.ToVietnamese(u"uyeets") 
