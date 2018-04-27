@@ -1,4 +1,5 @@
 from PreProcessing import PreProcessing
+from NGramLanguageModel import NGramLanguageModel
 #from NGramLanguageModel import NGramLanguageModel
 
 def main():
@@ -7,10 +8,12 @@ def main():
     # PreProcessing may also contain other functions of HolbrookCorpus
     trainingCorpus = PreProcessing(trainPath)
     
-    for sentence in trainingCorpus.corpus:
-        #_data = sentence.data 
-        #for i in range(len(datums)):
-        print sentence
+    # for sentence in trainingCorpus.corpus:
+    #     #_data = sentence.data 
+    #     #for i in range(len(datums)):
+    #     print sentence
+    print "NGram Language Model"
+    ngramLanguageModel = NGramLanguageModel(trainingCorpus)
 
     ########
     #print trainingCorpus.corpus
