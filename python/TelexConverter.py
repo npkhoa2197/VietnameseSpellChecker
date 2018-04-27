@@ -4,18 +4,24 @@
 class TelexConverter():
 	tone = u'sfxrj'
 	consonant = u'qrtpsghklxcvbnm'
+	
 	tonemap = {u'f' : [u'ầ', u'à', u'ằ', u'è', u'ề', u'ò', u'ồ', u'ờ', u'ù', u'ừ', u'ì', u'ỳ']
 	, u's': [u'ấ', u'á', u'ắ', u'é', u'ế', u'ó', u'ố', u'ớ', u'ú', u'ứ', u'í', u'ý']
 	, u'r': [u'ẩ', u'ả', u'ẳ', u'ẻ', u'ể', u'ỏ', u'ổ', u'ở', u'ủ', u'ử', u'ỉ', u'ỷ']
 	, u'x': [u'ẫ', u'ã', u'ẵ', u'ẽ', u'ễ', u'õ', u'ỗ', u'ỡ', u'ũ', u'ữ', u'ĩ', u'ỹ']
 	, u'j': [u'ậ', u'ạ', u'ặ', u'ẹ', u'ệ', u'ọ', u'ộ', u'ợ', u'ụ', u'ự', u'ị', u'ỵ'] 
 	, u'z': [u'â', u'a', u'ă', u'e', u'ê', u'o', u'ô', u'ơ', u'u', u'ư', u'i', u'y']}
+	
 	vietnameseCharMap = {u'aw': [u'ă', u'ắ', u'ằ', u'ặ', u'ẳ', u'ẵ'], u'aa': [u'â', u'ấ', u'ầ', u'ẩ', u'ẫ', u'ậ']
 	, u'a': [u'a', u'á', u'à', u'ả', u'ã', u'ạ'],  u'oo': [u'ô', u'ố', u'ồ', u'ổ', u'ỗ', u'ộ']
 	, u'ow': [u'ơ', u'ớ', u'ờ', u'ổ', u'ỗ', u'ộ'], u'o': [u'o', u'ó', u'ò', u'ỏ', u'õ', u'ọ']
 	, u'ee': [u'ê', u'ế', u'ề', u'ể', u'ễ', u'ệ'], u'e': [u'e', u'é', u'è', u'ẻ', u'ẽ', u'ẹ']
 	, u'uw': [u'ư', u'ứ', u'ừ', u'ử', u'ữ', u'ự'], u'u': [u'u', u'ú', u'ù', u'ủ', u'ũ', u'ụ']
 	, u'i': [u'i', u'í', u'ì', u'ỉ', u'ĩ', u'ị'], u'dd': u'đ', u'y' : [u'ý', u'ỳ', u'ỹ', u'ỷ', u'ỵ', u'y'] }
+	
+	def __init__(self, dictionary):
+		self.VietnameseDictionary = dictionary
+
 	def ToRaw(self, word):
 		newWord = u''
 		tail = u''
@@ -32,7 +38,9 @@ class TelexConverter():
 		if tail != u'z':
 			newWord = newWord + tail
 		return newWord
+	
 	def ToVietnamese(self, word):
+		word = word.decode('utf-8')
 		newWord = u''
 		tail = word[-1]
 		size = len(word) -1
@@ -47,7 +55,6 @@ class TelexConverter():
 			if skip > 0:
 				skip -= 1
 				continue
-			print word[i]
 			if word[i] in self.consonant:
 				newWord = newWord + word[i]
 			else:
@@ -109,4 +116,7 @@ class TelexConverter():
 					else:
 						newWord = newWord + self.tonemap[tail][11]
 						tail = u'z'
-		return newWord
+
+		if newWord.encode('utf-8') in self.VietnameseDictionary:
+			return newWord
+		return ''

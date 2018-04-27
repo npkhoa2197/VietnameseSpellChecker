@@ -1,49 +1,101 @@
 import math, collections
 class NGramLanguageModel:
+
     def __init__(self, corpus):
         """Initialize your data structures in the constructor."""
         
-        #self.bigramCounts = collections.defaultdict(int)
-        #self.unigramCounts = collections.defaultdict(int)
-        self.trigramCounts1 = collections.defaultdict(lambda: 0)
-        self.trigramCounts2 = collections.defaultdict(lambda: 0)
-        self.trigramCounts3 = collections.defaultdict(lambda: 0)
-        #self.fivegramCounts = collections.defaultdict(lambda: 0)
-        
-        #self.total = 0
+        self.unigramCounts = collections.defaultdict(int)
+        self.bigramCounts = collections.defaultdict(int)
+        self.trigramCounts = collections.defaultdict(int)
+        self.total = 0
         self.train(corpus)
 
     def train(self, corpus):
         """ Takes a corpus and trains your language model. 
             Compute any counts or other corpus statistics in this function.
-        """
-        wi_2 = '<s>'
-        wi_1 = ''
+        """  
+        
         for sentence in corpus.corpus:
-            datums = sentence.data 
-            for i in range(1, len(datums)-2):
-                if i == 1:
-                    wi_1 = datums[i].word
-                if i > 1:
-                    wi = datums[i].word
-                    wi1 = datums[i+1].word
-                    wi2 = datums[i+2].word
-                    trigram1 = (wi_2, wi_1, wi)
-                    trigram2 = (wi_1, wi, wi1)
-                    trigram3 = (wi, wi1, wi2)
-                    self.trigramCounts1[trigram1] += 1
-                    self.trigramCounts2[trigram2] += 1
-                    self.trigramCounts3[trigram3] += 1
-                    
-                    # fivegram = (wi_2, wi_1, wi, wi1, wi2)
-                    # self.fivegramCounts[fivegram] += 1
+            temp1 = '@NaN'
+            temp2 = '<s>'
+            temp3 = '@NaN'
+            self.unigramCounts[temp2] = self.unigramCounts[temp2] + 1
+            self.total += 1
+            for each in sentence.data:
+                temp3 = each.word
+                self.unigramCounts[temp3] = self.unigramCounts[temp3] + 1
+                
+                self.bigramCounts[(temp2,temp3)] = self.bigramCounts[(temp2,temp3)] + 1
+                
+                if temp1 != '@NaN':
+                    self.trigramCounts[(temp1,temp2,temp3)] += 1
+                
+                temp1 = temp2
+                temp2 = temp3
 
-                    #update 
-                    wi_2 = datums[i-1].word
-                    wi_1 = datums[i].word
+                self.total = self.total + 1
+        
+            temp1 = temp2
+            temp2 = temp3
+            temp3 = '</s>' 
+        
+            self.unigramCounts[temp3] = self.unigramCounts[temp3] + 1
+            self.bigramCounts[(temp2,temp3)] = self.bigramCounts[(temp2,temp3)] + 1
+            self.trigramCounts[(temp1,temp2,temp3)] = self.trigramCounts[(temp1,temp2,temp3)] + 1
 
-                    # what is self.total
-                    # self.total += 1
-        # print self.trigramCounts1
-        # print self.trigramCounts2
-        # print self.trigramCounts3
+            self.total = self.total + 1
+
+    def score(self, sentence):
+        """ Takes a list of strings as argument and returns the log-probability of the 
+            sentence using your language model. Use whatever data you computed in train() here.
+        """
+        score = 0
+        temp1 = '@NaN'
+        temp2 = '<s>'
+        temp3 = '@NaN'
+        unigramCounts = self.unigramCounts[temp2]
+        for word in sentence:
+            temp3 = word
+            bigramCounts = self.bigramCounts[(temp2,temp3)]
+            trigramCounts = self.trigramCounts[(temp1,temp2,temp3)]
+
+            #there will be 3 cases
+            #1. there is trigram
+            #2. there no trigram
+            #3. there is no trigram and bigram
+            if trigramCounts > 0:
+                score = score + math.log(trigramCounts)
+                score = score - (math.log(self.bigramCounts[(temp1,temp2)]))
+            elif bigramCounts > 0:
+                score = score + math.log(0.4) + math.log(bigramCounts)
+                score = score - (math.log(self.unigramCounts[temp2]))
+            else:
+                score = score + math.log(0.4) + math.log(self.unigramCounts[temp3]+1)
+                score = score - (math.log(self.total + (len(self.unigramCounts))))
+            
+            temp1 = temp2
+            temp2 = temp3
+
+        temp1 = temp2
+        temp2 = temp3
+        temp3 = '</s>' 
+        
+        unigramCounts = self.unigramCounts[temp3]
+        bigramCounts = self.bigramCounts[(temp2,temp3)]
+        trigramCounts = self.trigramCounts[(temp1,temp2,temp3)]
+
+        #similar to the above situation, there will also be 3 cases
+        #1. there is trigram
+        #2. there no trigram
+        #3. there is no trigram and bigram
+        if trigramCounts > 0:
+            score = score + math.log(trigramCounts)
+            score = score - (math.log(self.bigramCounts[(temp2,temp3)]))
+        elif bigramCounts > 0:
+            score = score + math.log(0.4) + math.log(bigramCounts)
+            score = score - (math.log(self.unigramCounts[temp2]))
+        else: 
+            score = score + math.log(0.4) + math.log(unigramCounts+1)
+            score = score - (math.log(self.total + (len(self.unigramCounts))))
+
+        return score
