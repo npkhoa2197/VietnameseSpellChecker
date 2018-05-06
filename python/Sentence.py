@@ -27,6 +27,12 @@ class Sentence:
         correctSentence.append(datum.word)
     return correctSentence
 
+  def getProcessableSentence(self):
+    sentence = []
+    for datum in self.data:
+      sentence.append(datum.word)
+    return sentence
+
   def isCorrection(self, candidate):
     """Checks if a list of strings is a correction of this sentence."""
     if len(self.data) != len(candidate):

@@ -22,6 +22,15 @@ class Datum:
     else:
       return False
 
+  def len(self):
+    return len(self.word)
+
+  def get(self, i):
+    return self.word[i]
+
+  def put(self, i, val):
+    self.word[i] = val
+
   def isValidTest(self):
     """Returns true if the error is within edit distance one and contains no numerics/punctuation."""
     if not self.hasError():
@@ -37,6 +46,6 @@ class Datum:
   def __str__(self):
     """Format: word (error)?"""
     rep = self.word 
-    if self.hasError():
-      rep = rep + " (" + self.error + ")"
+    # if self.hasError():
+    #   rep = rep + " (" + self.error + ")"
     return rep
